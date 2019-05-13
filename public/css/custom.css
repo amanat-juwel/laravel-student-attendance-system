@@ -1,0 +1,86 @@
+/*-------------------------------------------------------------------------------------
+Theme Name  : 
+Theme URI   : 
+Author URI  : 
+Description : 
+Author      : 
+Version     : 
+----------------------------------------------------------------------------------------*/
+
+#close
+{
+    width: 30%;
+    color: lightgreen;
+    background-color: gray;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px 1px #a1a1d0;
+    color: #d4cccc;
+}
+
+.portlet.box.green>.portlet-title, .portlet.green, .portlet>.portlet-body.green
+{
+    background-color: #00a65a;
+}
+
+
+
+div.fixed {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        border: 1px solid black;
+        
+        animation:2s blinker linear infinite;
+        -webkit-animation:2s blinker linear infinite;
+        -moz-animation:2s blinker linear infinite;
+        
+    }
+
+    @-moz-keyframes blinker {  
+     0% { opacity: 1.0; }
+     50% { opacity: 0.0; }
+     100% { opacity: 1.0; }
+     }
+
+    @-webkit-keyframes blinker {  
+     0% { opacity: 1.0; }
+     50% { opacity: 0.0; }
+     100% { opacity: 1.0; }
+     }
+
+    @keyframes blinker {  
+     0% { opacity: 1.0; }
+     50% { opacity: 0.0; }
+     100% { opacity: 1.0; }
+     }
+
+.amount{
+    text-align: right;
+}
+.qty-center{
+    text-align: center;
+}
+.bg-1{
+    background-color: lavender;
+}
+.bg-2{
+    background-color: lavenderblush;
+}
+.bg-3{
+    background-color: lavender;
+}
+.font-bold{
+    font-weight: bold;
+}
+.notification-list-ul{
+    padding-left: 0px;
+    margin-left: 5px;
+    text-decoration: none;
+}
+.notification-list-li{
+    margin: 5px;
+    border-bottom: 1px solid #f4f4f4;
+}
+.flex{
+    display:flex;
+}
