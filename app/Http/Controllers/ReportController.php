@@ -362,6 +362,87 @@ class ReportController extends Controller
             return view('report.absent.staff',compact('staffs','attendances'));
         }
     }
+
+    ######################################
+    // Student Present Datewise
+    ######################################
+    public function studentDatewiseIndex(){
+        return view('report.present.datewise.student');
+    }   
+
+    public function  studentDatewiseReport(Request $request){
+        
+        $reporting_date = $request->reporting_date;
+
+        $students   = DB::table('students')
+                      ->leftJoin('parents','parents.id' ,'=','students.parent_id')
+                      ->leftJoin('student_class_section','student_class_section.student_id' ,'=','students.id')
+                      ->leftJoin('classes','classes.id' ,'=','student_class_section.class_id')
+                      ->leftJoin('sections','sections.id' ,'=','student_class_section.section_id')
+                      ->leftJoin('student_van','student_van.student_id' ,'=','students.id')
+                      ->leftJoin('vans','vans.id' ,'=','student_van.van_id')  
+                      ->select('students.*','parents.father','parents.mother','parents.mobile_no','classes.name as class','sections.name as section','student_class_section.roll','vans.name as van')
+                      ->orderBy('student_class_section.class_id','asc')
+                      ->orderBy('student_class_section.section_id','asc')                      
+                      ->get() ;
+
+        $attendances  = DB::table('student_attendance')
+                      ->where('date',$reporting_date)                  
+                      ->get() ;
+                    
+
+        return view('report.present.datewise.student',compact('reporting_date','students','attendances'));
+    }
+
+    ######################################
+    // Teacher Present Datewise
+    ######################################
+    public function teacherDatewiseIndex(){
+        return view('report.present.datewise.teacher');
+    }   
     
+    public function  teacherDatewiseReport(Request $request){
+        
+        $reporting_date = $request->reporting_date;
+
+        $teachers   = DB::table('teachers')
+                      ->leftJoin('teacher_class_section','teacher_class_section.teacher_id' ,'=','teachers.id')
+                      ->leftJoin('classes','classes.id' ,'=','teacher_class_section.class_id')
+                      ->leftJoin('sections','sections.id' ,'=','teacher_class_section.section_id') 
+                      ->select('teachers.*','classes.name as class','sections.name as section')
+                      ->orderBy('teacher_class_section.class_id','asc')
+                      ->orderBy('teacher_class_section.section_id','asc')                      
+                      ->get() ;
+
+        $attendances  = DB::table('teacher_attendance')
+                      ->where('date',$reporting_date)                  
+                      ->get() ;
+                    
+
+        return view('report.present.datewise.teacher',compact('reporting_date','teachers','attendances'));
+    }
+    
+    ######################################
+    // Staff Present Datewise
+    ######################################
+    public function staffDatewiseIndex(){
+        return view('report.present.datewise.staff');
+    }   
+    
+    public function  staffDatewiseReport(Request $request){
+        
+        $reporting_date = $request->reporting_date;
+
+        $staffs   = DB::table('staffs')
+                      ->orderBy('staffs.name','asc')                     
+                      ->get() ;
+
+        $attendances  = DB::table('staff_attendance')
+                      ->where('date',$reporting_date)                
+                      ->get() ;
+                    
+
+        return view('report.present.datewise.staff',compact('reporting_date','staffs','attendances'));
+    }
 
 }

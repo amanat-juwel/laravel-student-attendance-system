@@ -31,10 +31,9 @@
                                     <th>Metric Id.</th>
                                     <th>Name</th>
                                     <th class="text-center">Parent</th>
-                                    <th>DOB (Y-m-d)</th>
-                                    <th>Image</th>
                                     <th>Academic</th>
-                                 
+                                    <th>In Time</th>
+                                    <th>Out Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,17 +51,15 @@
                                                     <span>Mother : {{ $data->mother}} </span><br>
                                                     <span>Mobile no : {{ $data->mobile_no}} </span>
                                                 </td>
-                                                <td>{{ $data->dob}}</td>
-                                                <td>
-                                                    <img src="{{ asset($data->image) }}" height="50px" width="50px"/>
-                                                </td>
+
                                                 <td>
                                                     <span class="text-red">Class: {{ $data->class }}</span><br>
                                                     <span class="text-blue">Section: {{ $data->section }}</span><br>
                                                     <span class="text-red">Roll: {{ $data->roll }}</span><br>
-                                                    <span class="text-blue">Van: @if(isset($data->van)){{ $data->van }} @else --- @endif</span>
+                                                
                                                 </td>
-                                             
+                                                <td>{{ date('g:i a',strtotime($attData->in_time)) }}</td>
+                                                <td>@if(isset($attData->out_time)) {{ date('g:i a',strtotime($attData->out_time)) }} @endif</td>
                                             </tr> 
                                         @endif
                                     @endforeach

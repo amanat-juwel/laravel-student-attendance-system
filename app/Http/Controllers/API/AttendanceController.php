@@ -11,7 +11,7 @@ use App\TeacherAttendance;
 use App\StaffAttendance;
 use Validator;
 use DB;
-
+use Carbon\Carbon;
 
 class AttendanceController extends BaseController
 {
@@ -80,33 +80,27 @@ class AttendanceController extends BaseController
                 $text = "Dear guardian,$student->name has entered Saint Cosmo School at $time in $_date #Thanks SCS";
 
                 $this->queuedSms($number, $text);
-
-               return $this->sendResponse($stdObj->toArray(), 'Saved successfully.');
+                $returnData = "$student->name [student]";
+               return $this->sendResponse($returnData, 'Punched-In successfully');
 
             }
             elseif(is_null($obj->out_time)){
                 $stdObj = StudentAttendance::where('date', date('Y-m-d'))
                     ->where('student_id', $student->id)
                     ->first();
-
-                // Set 5 minute waiting time
-                $secondsDifference=strtotime(date('Y-m-d H:i:s'))-strtotime($stdObj->in_time);
-                // if($secondsDifference < 300){
-
-                //     $in_sec = 300-$secondsDifference;
-                //     $in_min = ceil(intval($in_sec/60));
-                //     if($in_min>0){
-                //         return $this->sendResponse($stdObj->toArray(), "Wait $in_min Minute");
-                //     }
-                //     else{
-                //         return $this->sendResponse($stdObj->toArray(), "Wait $in_sec Seconds");
-                //     }
-                // }
                 
-                if($secondsDifference < 120){
-                    return $this->sendResponse($stdObj->toArray(), "Wait $secondsDifference Sec.");
+                //Validation for time difference between In and Out time start
+                $created_at = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $stdObj->in_time);
+                $now = \Carbon\Carbon::now();
+                $diff_in_seconds = $created_at->diffInSeconds($now);
+    
+                //setting 1 hour waiting time
+                if($diff_in_seconds < 3600){
+                    $waiting_time = 3600 - $diff_in_seconds;
+                    return $this->sendResponse($student->name, "Wait $waiting_time Sec.");
                 }
-
+                //Validation for time difference between In and Out time start
+                
                 $stdObj->out_time = date('Y-m-d H:i:s');
                 $stdObj->update();
 
@@ -114,15 +108,15 @@ class AttendanceController extends BaseController
                 $_date = date('d M Y');
                 $text = "Dear guardian,$student->name has left Saint Cosmo School at $time in $_date #Thanks SCS";
                 $this->queuedSms($number, $text);
-
-                return $this->sendResponse($stdObj->toArray(), 'Updated successfully.');
+                $returnData = "$student->name [student]";
+                return $this->sendResponse($returnData, 'Punched-Out successfully');
             }
             else{
 
                 $stdObj = StudentAttendance::where('date', date('Y-m-d'))
                     ->where('student_id', $student->id)
                     ->first();
-                return $this->sendResponse($stdObj->toArray(), 'Duplicate Entry!');
+                return $this->sendResponse($student->name, 'Duplicate Entry!');
             }
 
             ###################################
@@ -149,8 +143,8 @@ class AttendanceController extends BaseController
                 $teacherObj->teacher_id = $teacher->id;
                 $teacherObj->in_time = date('Y-m-d H:i:s');
                 $teacherObj->save();
-
-               return $this->sendResponse($teacherObj->toArray(), 'Saved successfully.');
+                $returnData = "$teacher->name [teacher]";
+               return $this->sendResponse($returnData, 'Punched_in successfully.');
 
             }
             elseif(is_null($obj->out_time)){
@@ -158,31 +152,30 @@ class AttendanceController extends BaseController
                     ->where('teacher_id', $teacher->id)
                     ->first();
 
-                // Set 5 minute waiting time
-                // $secondsDifference=strtotime(date('Y-m-d h:i:s'))-strtotime($stdObj->in_time);
-                // if($secondsDifference < 300){
-
-                //     $in_sec = 300-$secondsDifference;
-                //     $in_min = ceil(intval($in_sec/60));
-                //     if($in_min>0){
-                //         return $this->sendResponse($stdObj->toArray(), "Wait $in_min Minute");
-                //     }
-                //     else{
-                //         return $this->sendResponse($stdObj->toArray(), "Wait $in_sec Seconds");
-                //     }
-                // }
+                //Validation for time difference between In and Out time start
+                $created_at = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $teacherObj->in_time);
+                $now = \Carbon\Carbon::now();
+                $diff_in_seconds = $created_at->diffInSeconds($now);
+    
+                //setting 1 hour waiting time
+                if($diff_in_seconds < 3600){
+                    $waiting_time = 3600 - $diff_in_seconds;
+                    return $this->sendResponse($teacherObj->toArray(), "Wait $waiting_time Sec.");
+                }
+                //Validation for time difference between In and Out time start
 
                 $teacherObj->out_time = date('Y-m-d H:i:s');
                 $teacherObj->update();
-
-                return $this->sendResponse($teacherObj->toArray(), 'Updated successfully.');
+                $returnData = "$teacher->name [teacher]";
+                return $this->sendResponse($returnData, 'Punched-Out successfully.');
             }
             else{
 
                 $teacherObj = TeacherAttendance::where('date', date('Y-m-d'))
                     ->where('teacher_id', $teacher->id)
                     ->first();
-                return $this->sendResponse($teacherObj->toArray(), 'Duplicate Entry!');
+                $returnData = "$teacher->name [teacher]";
+                return $this->sendResponse($returnData, 'Duplicate Entry!');
             }
 
             ###################################
@@ -209,8 +202,8 @@ class AttendanceController extends BaseController
                 $staffObj->staff_id = $staff->id;
                 $staffObj->in_time = date('Y-m-d H:i:s');
                 $staffObj->save();
-
-               return $this->sendResponse($staffObj->toArray(), 'Saved successfully.');
+                $returnData = "$staff->name [staff]";
+               return $this->sendResponse($returnData, 'Punched-In successfully.');
 
             }
             elseif(is_null($obj->out_time)){
@@ -218,10 +211,22 @@ class AttendanceController extends BaseController
                     ->where('staff_id', $staff->id)
                     ->first();
 
+                //Validation for time difference between In and Out time start
+                $created_at = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $staffObj->in_time);
+                $now = \Carbon\Carbon::now();
+                $diff_in_seconds = $created_at->diffInSeconds($now);
+    
+                //setting 1 hour waiting time
+                if($diff_in_seconds < 3600){
+                    $waiting_time = 3600 - $diff_in_seconds;
+                    return $this->sendResponse($staffObj->toArray(), "Wait $waiting_time Sec.");
+                }
+                //Validation for time difference between In and Out time start
+
                 $staffObj->out_time = date('Y-m-d H:i:s');
                 $staffObj->update();
-
-                return $this->sendResponse($stdObj->toArray(), 'Updated successfully.');
+                $returnData = "$staff->name [staff]";
+                return $this->sendResponse($returnData, 'Punched-Out successfully.');
             }
             else{
 
@@ -279,32 +284,49 @@ class AttendanceController extends BaseController
     /**
     * Main SMS Functionality
     */
-    private function queuedSms($numbers, $text){
+    // private function queuedSms($numbers, $text){
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://107.20.199.106/restapi/sms/1/text/single");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "{ \"from\":\"InfoSms\",\"to\":[$numbers],\"text\":\"$text\" }");
-        curl_setopt($ch, CURLOPT_POST, 1);
+    //     $ch = curl_init();
+    //     curl_setopt($ch, CURLOPT_URL, "http://107.20.199.106/restapi/sms/1/text/single");
+    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    //     curl_setopt($ch, CURLOPT_POSTFIELDS, "{ \"from\":\"InfoSms\",\"to\":[$numbers],\"text\":\"$text\" }");
+    //     curl_setopt($ch, CURLOPT_POST, 1);
 
-        $headers = array();
-        $headers[] = "Content-Type: application/json";
-        $headers[] = "Accept: application/json";
-        $headers[] = "Authorization: Basic ".env('SMS_APP_KEY');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    //     $headers = array();
+    //     $headers[] = "Content-Type: application/json";
+    //     $headers[] = "Accept: application/json";
+    //     $headers[] = "Authorization: Basic ".env('SMS_APP_KEY');
+    //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        $result = json_decode(curl_exec($ch),true);
-        //print_r($result);
-        //$array = $result['messages'][0];
+    //     $result = json_decode(curl_exec($ch),true);
+    //     //print_r($result);
+    //     //$array = $result['messages'][0];
         
 
-        if (curl_errno($ch)) {
-            $msg =  'Error:' . curl_error($ch);
-            //return redirect('/')->with('danger',$array['status']['name']);
-            return false;
-        }
-        curl_close ($ch);
-        //end send sms
-        return true;
+    //     if (curl_errno($ch)) {
+    //         $msg =  'Error:' . curl_error($ch);
+    //         //return redirect('/')->with('danger',$array['status']['name']);
+    //         return false;
+    //     }
+    //     curl_close ($ch);
+    //     //end send sms
+    //     return true;
+    // }
+    
+    
+    private function queuedSms($numbers, $text){
+
+        $api_key = env('SMS_APP_KEY');
+        $api_token = env('SMS_APP_TOKEN');
+        $from = "8804445629187";
+        
+        $url = 'http://app.mimsms.com/smsAPI?sendsms&apikey='.$api_key.'&apitoken='.$api_token.'&type=sms&from='.$from.'&to='.$numbers.'&text='.$text;   
+           
+        $client = new \GuzzleHttp\Client();
+        $request = $client->get($url);
+        $response = $request->getBody()->getContents();
+
+        return $response;
+
     }
 }

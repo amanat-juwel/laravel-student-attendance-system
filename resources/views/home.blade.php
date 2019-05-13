@@ -105,6 +105,16 @@
               </div>
             </div>
           </a>
+
+          <div class="col-md-4 col-sm-6 col-xs-12">
+              <div class="info-box">
+                <span class="info-box-icon bg-orange"><i class="fa fa-money"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">SMS Balance</span>
+                  <span class="info-box-number">{{number_format($balance,2)}} TK</span></span>
+                </div>
+              </div>
+            </div>
       
     
     </div>

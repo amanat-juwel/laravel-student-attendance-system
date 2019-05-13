@@ -14,9 +14,10 @@
 
 Route::post('register', 'API\RegisterController@register');
 
+Route::post('/student/attendance', 'API\AttendanceController@store');
 
 Route::middleware('auth:api')->group( function () {
 	Route::resource('products', 'API\ProductController');
 
-	Route::post('/student/attendance', 'API\AttendanceController@store');
+	
 });

@@ -79,6 +79,17 @@ Route::group(['prefix' => 'report'], function () {
 
 	Route::get('/staff/attendance/{type}', 'ReportController@currentDateStaffAttendance');
 
+
+
+	Route::get('/student/single/datewise', 'ReportController@studentDatewiseIndex');
+	Route::post('/student/single/datewise', 'ReportController@studentDatewiseReport');
+
+	Route::get('/teacher/single/datewise', 'ReportController@teacherDatewiseIndex');
+	Route::post('/teacher/single/datewise', 'ReportController@teacherDatewiseReport');
+
+	Route::get('/staff/single/datewise', 'ReportController@staffDatewiseIndex');
+	Route::post('/staff/single/datewise', 'ReportController@staffDatewiseReport');
+
 });
 
 //User

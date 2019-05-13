@@ -28,14 +28,11 @@
                             <thead>
                                 <tr>
                                     <th height="25">Srl</th>
-                                    <th>Metric Id</th>
                                     <th>Name</th>
-                                    <th>Designation</th>
-                                    <th>Contact</th>
-                                    <th>Image</th>
-                                    <th>Other Contact</th>
+                                    <th>Mobile</th>
                                     <th>Academic</th>
-                                 
+                                    <th>In Time</th>
+                                    <th>Out Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,26 +43,23 @@
                                         @if($data->id == $attData->teacher_id)
                                           <tr>
                                                 <td>{{ ++$key }}</td>
-                                                <td>{{ $data->metric_id }}</td>
-                                                <td>{{ $data->name }}</td>
-                                                <td>{{ $data->designation}}</td>
                                                 <td>
-                                                    Email: {{ $data->email }}<br>
-                                                    Mobile: {{ $data->mobile_no }}<br>
-                                                    Address: {{ $data->address }}
+                                                    <strong>{{ $data->name }}</strong>
+                                                    <br>
+                                                    {{ $data->designation}}
                                                 </td>
                                                 <td>
-                                                    <img src="{{ asset($data->image) }}" height="50px" width="50px"/>
-                                                </td>
-                                                <td>
-                                                    {{ $data->other_contact_name }}<br>
-                                                    Relation: {{ $data->other_contact_type }}<br>
-                                                    Contact: {{ $data->other_contact_mobile_no }}
+                                               
+                                                    {{ $data->mobile_no }}
+                                                   
                                                 </td>
                                                 <td>
                                                     <span class="text-red">Class: {{ $data->class }}</span><br>
                                                     <span class="text-blue">Section: {{ $data->section }}</span>
                                                 </td>
+                                                <td>{{ date('g:i a',strtotime($attData->in_time)) }}</td>
+                                                <td>@if(isset($attData->out_time)) {{ date('g:i a',strtotime($attData->out_time)) }} @endif</td>
+                                                
                                             </tr>
                                         @endif
                                     @endforeach

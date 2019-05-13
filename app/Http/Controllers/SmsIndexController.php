@@ -10,6 +10,7 @@ use App\Staff;
 use App\SmsTemplate;
 use App\ClassModel;
 use App\Section;
+use App\Van;
 use DB;
 
 class SmsIndexController extends Controller
@@ -57,6 +58,7 @@ class SmsIndexController extends Controller
         $sms_templates = SmsTemplate::all();
         $classes = ClassModel::all() ;
         $sections = Section::all() ;
+        $vans = Van::all() ;
 
         return view('send_sms.students',compact('sms_templates','classes','sections','vans'));
     }

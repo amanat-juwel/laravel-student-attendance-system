@@ -30,8 +30,8 @@
             <a href="{{ url('/') }}" class="logo hidden-xs">
             <!-- mini logo for sidebar mini 50x50 pixels -->
            <!--  <span class="logo-mini"><img src='' height="25" width="25"></span>
-           
-            <span class="logo-lg"><img src='' height="50" width="200"></span> -->
+            -->
+            <span class="logo-lg">SCS</span>
             </a>
             <nav class="navbar">
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -157,7 +157,7 @@
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-file"></i>
-                                    <span>Attendance</span>
+                                    <span>Attendance Single</span>
                                     <span class="pull-right-container">
                                   <i class="fa fa-angle-left pull-right text-green"></i>
                                 </span>
@@ -170,8 +170,23 @@
                                     <li><a href="{{ url('/report/staff/single') }}"><i class="fa fa-location-arrow"></i> Staff</a></li>
 
                                 </ul>
-                            
-                            <li><a target="_blank" href="http://cloud.mimsms.com/analyze/logs"><i class="fa fa-clock-o"></i> SMS Logs</a></li>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <i class="fa fa-file"></i>
+                                    <span>Attendance Datewise</span>
+                                    <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right text-green"></i>
+                                </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ url('/report/student/single/datewise') }}"><i class="fa fa-location-arrow"></i> Student</a></li>
+                                    <li><a href="{{ url('/report/teacher/single/datewise') }}"><i class="fa fa-location-arrow"></i> Teacher</a></li>
+                                    <li><a href="{{ url('/report/staff/single/datewise') }}"><i class="fa fa-location-arrow"></i> Staff</a></li>
+
+                                </ul>
+                            </li>
+                            <li><a target="_blank" href="http://app.mimsms.com/sent"><i class="fa fa-clock-o"></i> SMS Logs</a></li>
                             <li><a href="{{ url('/report/metric_id/list') }}"><i class="fa fa-list"></i> Metric ID List</a></li>
                         </ul>
 

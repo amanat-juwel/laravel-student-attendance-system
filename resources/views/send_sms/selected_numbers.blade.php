@@ -15,6 +15,7 @@
 <div class="row">
     <div class="col-md-8">
         <section class="content">
+        @include('partials.message')
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="row">

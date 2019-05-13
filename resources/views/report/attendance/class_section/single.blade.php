@@ -90,8 +90,8 @@
                     @foreach($attendances as $data)
                     <tr>
                         <td>{{$data->student_name}}</td>
-                        <td>{{$data->in_time}}</td>
-                        <td>{{$data->out_time}}</td>
+                        <td>{{ date('g:i a',strtotime($data->in_time)) }}</td>
+                        <td>@if(isset($data->out_time)) {{ date('g:i a',strtotime($data->out_time)) }} @endif</td>
                     </tr>
                     @endforeach
                 </tbody>

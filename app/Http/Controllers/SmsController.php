@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Student;
 use App\ParentModel;
@@ -8,6 +8,8 @@ use App\Teacher;
 use App\Member;
 use App\Staff;
 use DB;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class SmsController extends Controller
 {
@@ -52,13 +54,12 @@ class SmsController extends Controller
         $result_string = '"' . str_replace(",", '","', $implode) . '"';
         $numbers = $result_string;
         $text = $request->text;
-        if($this->queuedSms($numbers,$text)){
-            return redirect()->back()->with('success','Sms Sent Successfully');
+
+        $result = $this->queuedSms($numbers,$text);
+        
+        return redirect()->back()->with('success',"Response: $result");
+        
         }
-        else{
-            return redirect()->back()->with('danger','Sms could not be sent.');
-        }
-    }
     /**
     * Send SMS to Students
     */
@@ -266,15 +267,23 @@ class SmsController extends Controller
         $formatted_numbers .= ','.$this->convertArraytoString($array_of_numbers);
         ###STAFF
 
-        return $formatted_numbers;
+        //return $formatted_numbers;
         //Get numbers
-        $this->queuedSms($numbers,$text);
+        
+        if($this->queuedSms($formatted_numbers,$text)){
+            return redirect()->back()->with('success','Sms Sent Successfully');
+        }
+        else{
+            return redirect()->back()->with('danger','Sms could not be sent.');
+        }
+        //$this->queuedSms($numbers,$text);
         //SMS::queuedSms($numbers,$text);
     }
 
     /**
-    * Main SMS Functionality
+    * Main SMS Functionality :: OLD FORMAT
     */
+    /*
     private function queuedSms($numbers, $text){
 
         $ch = curl_init();
@@ -303,7 +312,22 @@ class SmsController extends Controller
         //end send sms
         return true;
     }
+    */
+    private function queuedSms($numbers, $text){
 
+        $api_key = env('SMS_APP_KEY');
+	    $api_token = env('SMS_APP_TOKEN');
+    	$from = "8804445629187";
+    	
+    	$url = 'http://app.mimsms.com/smsAPI?sendsms&apikey='.$api_key.'&apitoken='.$api_token.'&type=sms&from='.$from.'&to='.$numbers.'&text='.$text;   
+    	   
+    	$client = new \GuzzleHttp\Client();
+        $request = $client->get($url);
+        $response = $request->getBody()->getContents();
+
+        return $response;
+
+    }
     /**
     *  Helper Method
     */

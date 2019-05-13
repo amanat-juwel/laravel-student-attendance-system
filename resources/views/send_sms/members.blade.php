@@ -28,6 +28,7 @@
     </div>
     <div class="col-sm-8">
         <section class="content">
+        @include('partials.message')
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="form-group">

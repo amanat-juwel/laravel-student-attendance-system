@@ -1,15 +1,15 @@
 $(document).ready(function(){
     setTimeout(function(){
         $('#success').fadeOut('slow');
-    },6000);
+    },30000);
 
     setTimeout(function(){
         $('#update').fadeOut('slow');
-    },6000);
+    },30000);
 
     setTimeout(function(){
         $('#delete').fadeOut('slow');
-    },6000);
+    },30000);
 
     $('#category').DataTable({
         'paging'      : true,

@@ -65,8 +65,8 @@
                                     @foreach($attendances as $data)
                                     <tr>
                                         <td>{{date('M j,Y', strtotime($data->date))}}</td>
-                                        <td>{{ date('g:i a',strtotime($data->in_time)) }}</td>
-                                        <td>@if(isset($data->out_time)) {{ date('g:i a',strtotime($data->out_time)) }} @endif</td>
+                                        <td>{{ $data->in_time }}</td>
+                                        <td>{{ $data->out_time }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

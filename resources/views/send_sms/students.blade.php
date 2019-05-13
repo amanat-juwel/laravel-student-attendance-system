@@ -30,18 +30,18 @@
                               <label class="sub_label">Class:</label>
                               <select class="form-control input-sm" name="class_id">
                                 <option value="">--Choose--</option>
-                                <option value="1">Class 1</option>
-                                <option value="2">Class 2</option>
-                                <option value="3">Class 3</option>
-                                <option value="4">Class 4</option>
+                                @foreach($classes as $data)
+                                <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                @endforeach
                               </select>
                             </div>
                             <div class="form-group">
                               <label class="sub_label">Section:</label>
                               <select class="form-control input-sm" name="section_id">
                                 <option value="">--Choose--</option>
-                                <option value="1">A</option>
-                                <option value="2">B</option>
+                                @foreach($sections as $data)
+                                <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                @endforeach
                               </select>
                             </div>
                           </div>
@@ -55,8 +55,9 @@
                                 <span class="input-group-addon"><i style="color: black !important;" class="fa fa-truck"></i></span>
                                 <select class="form-control input-sm" name="van_id">
                                     <option value="">--Choose--</option>
-                                    <option value="1">Van 1</option>
-                                    <option value="2">Van 2</option>
+                                    @foreach($vans as $data)
+                                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             
@@ -70,6 +71,7 @@
     </div>
     <div class="col-sm-8">
         <section class="content">
+        @include('partials.message')
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="form-group">
